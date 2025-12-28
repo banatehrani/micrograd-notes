@@ -7,3 +7,11 @@ __pycache__/
 
 # VS Code
 .vscode/
+
+# Packaging / editable installs
+*.egg-info/
+dist/
+build/
+
+# Generated artifacts
+*.png
