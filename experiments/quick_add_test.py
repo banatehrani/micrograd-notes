@@ -2,10 +2,10 @@ from micrograd_notes.engine import Value
 
 a = Value(2.0)
 b = Value(3.0)
-c = a + b
+c = a * b + a  # c = a*b + a
 
-print(c)  # expect Value(data=5.0, grad=0.0)
+c.backward()
 
-d = a * b
-
-print(d)  # expect Value(data=6.0, grad=0.0)
+print("c:", c)        # data should be 8.0
+print("a.grad:", a.grad)  # should be b + 1 = 4.0
+print("b.grad:", b.grad)  # should be a = 2.0
