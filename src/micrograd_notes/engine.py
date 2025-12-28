@@ -28,5 +28,17 @@ class Value:
         out._backward = _backward
         out._prev = {self, other}
         out._op = "+"
+        return out
+    
+    def __mul__(self, other: "Value") -> "Value":
+        other = other if isinstance(other, Value) else Value(other)
+        out = Value(self.data * other.data)
 
+        def _backward():
+            self.grad += other.data * out.grad
+            other.grad += self.data * out.grad
+
+        out._backward = _backward
+        out._prev = {self, other}
+        out._op = "*"
         return out
