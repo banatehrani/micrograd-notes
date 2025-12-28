@@ -42,3 +42,20 @@ class Value:
         out._prev = {self, other}
         out._op = "*"
         return out
+    
+    def backward(self) -> None:
+        topo = []
+        visited = set()
+
+        def build(v: "Value"):
+            if v not in visited:
+                visited.add(v)
+                for child in v._prev:
+                    build(child)
+                topo.append(v)
+
+        build(self)
+
+        self.grad = 1.0
+        for v in reversed(topo):
+            v._backward()
