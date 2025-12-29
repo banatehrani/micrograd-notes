@@ -44,6 +44,18 @@ class Value:
         out._op = "*"
         return out
     
+    def __pow__(self, other: float) -> "Value":
+        assert isinstance(other, (int, float))
+        out = Value(self.data ** other)
+
+        def _backward():
+            self.grad += (other * (self.data ** (other - 1))) * out.grad
+
+        out._backward = _backward
+        out._prev = {self}
+        out._op = f"**{other}"
+        return out
+    
     def tanh(self) -> "Value":
         t = math.tanh(self.data)
         out = Value(t)
