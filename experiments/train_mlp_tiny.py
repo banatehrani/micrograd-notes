@@ -1,6 +1,9 @@
 from micrograd_notes.engine import Value
 from micrograd_notes.nn import MLP
 
+import random
+random.seed(42)
+
 # Tiny dataset (Karpathy style)
 xs = [
     [2.0, 3.0, -1.0],
@@ -28,10 +31,11 @@ for k in range(50):
     for p in mlp.parameters():
         p.data += -lr * p.grad
 
-    if k % 5 == 0:
-        print(k, loss.data)
+    if k % 5 == 0 or k == 49:
+        print(f"iter={k:02d} loss={loss.data:.6f}")
 
-print("predictions:")
-for x in xs:
+
+print("\nfinal predictions:")
+for x, ygt in zip(xs, ys):
     y = mlp([Value(xi) for xi in x])
-    print(x, y.data)
+    print(f"x={x} pred={y.data:.4f} target={ygt:+.1f}")
