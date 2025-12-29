@@ -53,6 +53,12 @@ class Value:
         out._op = "*"
         return out
     
+    def __radd__(self, other: "Value") -> "Value":
+        return self + other
+
+    def __rmul__(self, other: "Value") -> "Value":
+        return self * other
+    
     def __pow__(self, other: float) -> "Value":
         assert isinstance(other, (int, float))
         out = Value(self.data ** other)
