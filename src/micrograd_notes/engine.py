@@ -65,6 +65,12 @@ class Value:
         out._op = f"**{other}"
         return out
     
+    def __truediv__(self, other: "Value") -> "Value":
+        return self * (other ** -1)
+
+    def __rtruediv__(self, other: "Value") -> "Value":
+        return other * (self ** -1)
+    
     def tanh(self) -> "Value":
         t = math.tanh(self.data)
         out = Value(t)
