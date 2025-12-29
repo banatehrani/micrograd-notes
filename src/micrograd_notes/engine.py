@@ -31,6 +31,15 @@ class Value:
         out._op = "+"
         return out
     
+    def __neg__(self) -> "Value":
+        return self * -1
+
+    def __sub__(self, other: "Value") -> "Value":
+        return self + (-other)
+
+    def __rsub__(self, other: "Value") -> "Value":
+        return other + (-self)
+    
     def __mul__(self, other: "Value") -> "Value":
         other = other if isinstance(other, Value) else Value(other)
         out = Value(self.data * other.data)
