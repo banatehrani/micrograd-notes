@@ -84,6 +84,18 @@ class Value:
         out._op = "tanh"
         return out
     
+    def exp(self) -> "Value":
+        x = self.data
+        out = Value(math.exp(x))
+
+        def _backward():
+            self.grad += out.data * out.grad  # d/dx exp(x) = exp(x)
+
+        out._backward = _backward
+        out._prev = {self}
+        out._op = "exp"
+        return out
+    
     def backward(self) -> None:
         topo = []
         visited = set()
