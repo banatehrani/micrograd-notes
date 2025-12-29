@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from typing import Callable, Set
+import math
 
 
 @dataclass(eq=False)
@@ -41,6 +42,19 @@ class Value:
         out._backward = _backward
         out._prev = {self, other}
         out._op = "*"
+        return out
+    
+    def tanh(self) -> "Value":
+        t = math.tanh(self.data)
+        out = Value(t)
+
+        def _backward():
+            # d/dx tanh(x) = 1 - tanh(x)^2
+            self.grad += (1 - t * t) * out.grad
+
+        out._backward = _backward
+        out._prev = {self}
+        out._op = "tanh"
         return out
     
     def backward(self) -> None:
